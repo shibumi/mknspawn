@@ -61,6 +61,7 @@ case $DISTRIBUTION in
 
     "archlinux")
         echo "[+] Bootstrapping archlinux/archlinux"
+        mkdir "$MACHINED_DIR$CONTAINER_NAME"
         pacstrap -i -c -d "$MACHINED_DIR$CONTAINER_NAME" base openssh > /dev/null
         ;;
     *)
