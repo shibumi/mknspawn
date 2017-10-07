@@ -27,7 +27,7 @@
 # vim:set et sw=4 ts=4 tw=72:
 #
 
-if [ "$(uid -u)" != "0" ]; then
+if [ "$(id -u)" != "0" ]; then
     echo "[+] You need sudo.."
     exit 1
 fi
