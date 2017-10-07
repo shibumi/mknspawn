@@ -32,6 +32,10 @@ if [ "$(uid -u)" != "0" ]; then
     exit 1
 fi
 
+if [ "$#" -eq 0 ]; then
+    echo "[!] mknspawn <containername> <distribution> <release>"
+fi
+
 CONTAINER_NAME="$1"
 DISTRIBUTION="$2"
 RELEASE="$3"
