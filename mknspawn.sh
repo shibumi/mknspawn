@@ -41,28 +41,38 @@ SSH_KEY="/home/chris/.ssh/archlinux.pub"
 
 case $DISTRIBUTION in
     "ubuntu")
+        echo "[+] Bootstrapping ubuntu/$RELEASE"
          debootstrap --include dbus,vim,less,tmux,openssl,openssh-server "$RELEASE" "$MACHINED_DIR$CONTAINER_NAME" http://archive.ubuntu.com/ubuntu/ > /dev/null
+         echo "[+] Finished Bootstrapping"
          ;;
 
     "debian")
+        echo "[+] Bootstrapping debian/$RELEASE"
          debootstrap --include dbus,vim,less,tmux,openssl,openssh-server "$RELEASE" "$MACHINED_DIR$CONTAINER_NAME" > /dev/null
+         echo "[+] Finished Bootstrapping"
          ;;
     *)
-        echo "[-] sorry ubuntu and debian only"
+        echo "[-] Sorry ubuntu and debian only"
         exit 2
 esac
 
 if [ -d "$MACHINED_DIR$CONTAINER_NAME" ]; then
     echo "pts/0" >> "$MACHINED_DIR$CONTAINER_NAME/etc/securetty"
+    echo "[+] added 'pts/0' to $MACHINED_DIR$CONTAINER_NAME/etc/securetty"
     mkdir -m700 "$MACHINED_DIR$CONTAINER_NAME/root/.ssh"
+    echo "[+] created $MACHINED_DIR$CONTAINER_NAME/root/.ssh"
     install -m600 "$SSH_KEY" "$MACHINED_DIR$CONTAINER_NAME/root/.ssh/authorized_keys"
+    echo "[+] copied $SSH_KEY to $MACHINED_DIR$CONTAINER_NAME/root/.ssh/authorized_keys"
     machinectl start "$CONTAINER_NAME"
-    machinectl shell "$CONTAINER_NAME" systemctl enable systemd-networkd
-    machinectl shell "$CONTAINER_NAME" systemctl enable systemd-resolved
-    machinectl shell "$CONTAINER_NAME" systemctl enable sshd
+    echo "[+] started container"
+    machinectl shell "$CONTAINER_NAME" systemctl enable systemd-networkd > /dev/null
+    machinectl shell "$CONTAINER_NAME" systemctl enable systemd-resolved > /dev/null
+    machinectl shell "$CONTAINER_NAME" systemctl enable sshd > /dev/null
+    echo "[+] enabled important services"
     machinectl shell "$CONTAINER_NAME" passwd -d root
+    echo "[+] removed root password"
 
 else
-    echo "[-] target directory $MACHINED_DIR$CONTAINER_NAME does not exist!"
+    echo "[-] Target directory $MACHINED_DIR$CONTAINER_NAME does not exist!"
     exit 3
 fi
