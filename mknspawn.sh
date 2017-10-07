@@ -43,7 +43,7 @@ CONTAINER_NAME="$1"
 DISTRIBUTION="$2"
 RELEASE="$3"
 MACHINED_DIR="/var/lib/machines/"
-SSH_KEY="/home/chris/.ssh/archlinux.pub"
+SSH_KEY="/home/chris/.ssh/id_rsa.pub"
 
 
 case $DISTRIBUTION in
@@ -58,6 +58,11 @@ case $DISTRIBUTION in
          debootstrap --include dbus,vim,less,tmux,openssl,openssh-server "$RELEASE" "$MACHINED_DIR$CONTAINER_NAME" > /dev/null
          echo "[+] Finished Bootstrapping"
          ;;
+
+    "archlinux")
+        echo "[+] Bootstrapping archlinux/archlinux"
+        pacstrap -i -c -d "$MACHINED_DIR$CONTAINER_NAME" base openssh > /dev/null
+        ;;
     *)
         echo "[-] Sorry ubuntu and debian only"
         exit 3
