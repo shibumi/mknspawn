@@ -27,7 +27,7 @@
 # vim:set et sw=4 ts=4 tw=72:
 #
 
-if [ `uid -u` != "0" ]; then
+if [ "$(uid -u)" != "0" ]; then
     echo "[+] You need sudo.."
     exit 1
 fi
@@ -39,30 +39,30 @@ MACHINED_DIR="/var/lib/machines/"
 SSH_KEY="/home/chris/.ssh/archlinux.pub"
 
 
-case $2 in
+case $DISTRIBUTION in
     "ubuntu")
-         debootstrap --include dbus,vim,less,tmux,openssl,openssh-server "$3" "$MACHINED_DIR$1" http://archive.ubuntu.com/ubuntu/ > /dev/null
+         debootstrap --include dbus,vim,less,tmux,openssl,openssh-server "$RELEASE" "$MACHINED_DIR$CONTAINER_NAME" http://archive.ubuntu.com/ubuntu/ > /dev/null
          ;;
 
     "debian")
-         debootstrap --include dbus,vim,less,tmux,openssl,openssh-server "$3" "$MACHINED_DIR$1" > /dev/null
+         debootstrap --include dbus,vim,less,tmux,openssl,openssh-server "$RELEASE" "$MACHINED_DIR$CONTAINER_NAME" > /dev/null
          ;;
     *)
         echo "[-] sorry ubuntu and debian only"
         exit 2
 esac
 
-if [ -d "$MACHINED_DIR$1" ]; then
-    echo "pts/0" >> "$MACHINED_DIR$1/etc/securetty"
-    mkdir -m700 "$MACHINED_DIR$1/root/.ssh"
-    install -m600 "$SSH_KEY" "$MACHINED_DIR$1/root/.ssh/authorized_keys"
-    machinectl start "$1"
-    machinectl shell "$1" systemctl enable systemd-networkd
-    machinectl shell "$1" systemctl enable systemd-resolved
-    machinectl shell "$1" systemctl enable sshd
-    machinectl shell "$1" passwd -d root
+if [ -d "$MACHINED_DIR$CONTAINER_NAME" ]; then
+    echo "pts/0" >> "$MACHINED_DIR$CONTAINER_NAME/etc/securetty"
+    mkdir -m700 "$MACHINED_DIR$CONTAINER_NAME/root/.ssh"
+    install -m600 "$SSH_KEY" "$MACHINED_DIR$CONTAINER_NAME/root/.ssh/authorized_keys"
+    machinectl start "$CONTAINER_NAME"
+    machinectl shell "$CONTAINER_NAME" systemctl enable systemd-networkd
+    machinectl shell "$CONTAINER_NAME" systemctl enable systemd-resolved
+    machinectl shell "$CONTAINER_NAME" systemctl enable sshd
+    machinectl shell "$CONTAINER_NAME" passwd -d root
 
 else
-    echo "[-] target directory $MACHINED_DIR$1 does not exist!"
+    echo "[-] target directory $MACHINED_DIR$CONTAINER_NAME does not exist!"
     exit 3
 fi
