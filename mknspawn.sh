@@ -34,6 +34,7 @@ fi
 
 if [ "$#" -eq 0 ]; then
     echo "[!] mknspawn <containername> <distribution> <release>"
+    exit 2
 fi
 
 CONTAINER_NAME="$1"
@@ -57,7 +58,7 @@ case $DISTRIBUTION in
          ;;
     *)
         echo "[-] Sorry ubuntu and debian only"
-        exit 2
+        exit 3
 esac
 
 if [ -d "$MACHINED_DIR$CONTAINER_NAME" ]; then
@@ -78,5 +79,5 @@ if [ -d "$MACHINED_DIR$CONTAINER_NAME" ]; then
 
 else
     echo "[-] Target directory $MACHINED_DIR$CONTAINER_NAME does not exist!"
-    exit 3
+    exit 4
 fi
