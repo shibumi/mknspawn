@@ -78,9 +78,9 @@ if [ -d "$MACHINED_DIR$CONTAINER_NAME" ]; then
     echo "[+] copied $SSH_KEY to $MACHINED_DIR$CONTAINER_NAME/root/.ssh/authorized_keys"
     machinectl start "$CONTAINER_NAME"
     echo "[+] started container"
-    machinectl shell "$CONTAINER_NAME" /bin/systemctl enable systemd-networkd > /dev/null
-    machinectl shell "$CONTAINER_NAME" /bin/systemctl enable systemd-resolved > /dev/null
-    machinectl shell "$CONTAINER_NAME" /bin/systemctl enable sshd > /dev/null
+    systemctl -q -M "$CONTAINER_NAME" enable systemd-networkd --now
+    systemctl -q -M "$CONTAINER_NAME" enable systemd-resolved --now
+    systemctl -q -M "$CONTAINER_NAME" enable sshd --now
     echo "[+] enabled important services"
     machinectl shell "$CONTAINER_NAME" /bin/passwd -d root
     echo "[+] removed root password"
