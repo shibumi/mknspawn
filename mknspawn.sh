@@ -49,13 +49,13 @@ SSH_KEY="/home/chris/.ssh/tuclausthal.pub"
 case $DISTRIBUTION in
     "ubuntu")
         echo "[+] Bootstrapping ubuntu/$RELEASE"
-         debootstrap --include dbus,vim,less,tmux,openssl,openssh-server "$RELEASE" "$MACHINED_DIR$CONTAINER_NAME" http://archive.ubuntu.com/ubuntu/ > /dev/null
+         debootstrap --include dbus,vim,less,tmux,openssl,openssh-server,python "$RELEASE" "$MACHINED_DIR$CONTAINER_NAME" http://archive.ubuntu.com/ubuntu/ > /dev/null
          echo "[+] Finished Bootstrapping"
          ;;
 
     "debian")
         echo "[+] Bootstrapping debian/$RELEASE"
-         debootstrap --include dbus,vim,less,tmux,openssl,openssh-server "$RELEASE" "$MACHINED_DIR$CONTAINER_NAME" > /dev/null
+         debootstrap --include dbus,vim,less,tmux,openssl,openssh-server,python "$RELEASE" "$MACHINED_DIR$CONTAINER_NAME" > /dev/null
          echo "[+] Finished Bootstrapping"
          ;;
 
