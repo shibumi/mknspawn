@@ -43,7 +43,7 @@ CONTAINER_NAME="$1"
 DISTRIBUTION="$2"
 RELEASE="$3"
 MACHINED_DIR="/var/lib/machines/"
-SSH_KEY="/home/chris/.ssh/id_rsa.pub"
+SSH_KEY="/home/chris/.ssh/tuclausthal.pub"
 
 
 case $DISTRIBUTION in
