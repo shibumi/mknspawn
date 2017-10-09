@@ -81,7 +81,11 @@ if [ -d "$MACHINED_DIR$CONTAINER_NAME" ]; then
     sleep 3
     systemctl -q -M "$CONTAINER_NAME" enable systemd-networkd --now
     systemctl -q -M "$CONTAINER_NAME" enable systemd-resolved --now
-    systemctl -q -M "$CONTAINER_NAME" enable sshd --now
+    if [ "$DISTRIBUTION" == "archlinux" ]; then
+        systemctl -q -M "$CONTAINER_NAME" enable sshd --now
+    else
+        systemctl -q -M "$CONTAINER_NAME" enable ssh --now
+    fi
     echo "[+] enabled important services"
     machinectl shell "$CONTAINER_NAME" /bin/passwd -d root
     echo "[+] removed root password"
