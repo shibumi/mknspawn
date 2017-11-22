@@ -87,7 +87,7 @@ if [ -d "$MACHINED_DIR$CONTAINER_NAME" ]; then
         systemctl -q -M "$CONTAINER_NAME" enable ssh --now
     fi
     echo "[+] enabled important services"
-    machinectl shell "$CONTAINER_NAME" /bin/passwd -d root
+    machinectl shell "$CONTAINER_NAME" /usr/bin/passwd -d root
     echo "[+] removed root password"
 
 else
